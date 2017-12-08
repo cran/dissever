@@ -1,0 +1,48 @@
+import(caret)
+import(methods)
+import(stats)
+
+importFrom("graphics", "lines", "points")
+
+importFrom(sp, coordinates)
+
+importFrom(raster, as.data.frame)
+importFrom(raster, is.factor)
+importFrom(raster, extract)
+importFrom(raster, res)
+importFrom(raster, raster)
+importFrom(raster, ncell)
+importFrom(raster, rasterFromXYZ)
+importFrom(raster, projection)
+importFrom(raster, plot)
+importClassesFrom(raster, RasterLayer)
+importClassesFrom(raster, RasterStack)
+
+importFrom(plyr, aaply)
+
+importFrom(dplyr, inner_join, left_join)
+importFrom(dplyr, select)
+importFrom(dplyr, matches)
+importFrom(dplyr, group_by)
+importFrom(dplyr, summarise)
+importFrom(dplyr, matches)
+
+importFrom(foreach, getDoParWorkers)
+importFrom(foreach, foreach)
+importFrom(foreach, "%dopar%")
+
+importFrom(boot, boot)
+
+importFrom(magrittr, "%>%")
+
+importFrom(viridis, viridis)
+
+export(print.dissever)
+S3method(print, dissever)
+export(summary.dissever)
+S3method(summary, dissever)
+export(plot.dissever)
+S3method(plot, dissever)
+
+exportMethods(dissever)
+exportMethods(generate_ci)
