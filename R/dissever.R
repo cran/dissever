@@ -79,9 +79,9 @@ utils::globalVariables(c(
 # fits one model to the entire training set
 .default_control_iter <- caret::trainControl(method = 'none')
 
-.create_tune_grid <- function(model, tune_length) {
+.create_tune_grid <- function(model, length) {
   params <- modelLookup(model)$parameter
-  grid <- expand.grid(lapply(1:length(params), function(x) 1:tune_length))
+  grid <- expand.grid(lapply(1:length(params), function(x) 1:length))
   names(grid) <- as.character(params)
   grid
 }
@@ -247,14 +247,15 @@ utils::globalVariables(c(
     coarse,
     fine,
     method = "rf",
-    p = 0.5, nmax = NULL,
+    p = 0.5,
+    nmax = NULL,
     thresh = 0.01,
     min_iter = 5,
     max_iter = 20,
     boot = NULL,
     level = 0.9,
     tune_length = 3,
-    tune_grid = .create_tune_grid(model = method, tune_length = tune_length),
+    tune_grid = .create_tune_grid(model = method, length = tune_length),
     train_control_init = .default_control_init,
     train_control_iter = .default_control_iter,
     verbose = FALSE

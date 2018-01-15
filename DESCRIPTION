@@ -1,8 +1,8 @@
 Package: dissever
 Type: Package
 Title: Spatial Downscaling using the Dissever Algorithm
-Version: 0.2-1
-Date: 2017-12-07
+Version: 0.2-2
+Date: 2018-01-15
 Authors@R: c(
     person("Pierre", "Roudier", email = "roudierp@landcareresearch.co.nz", role = c("cre", "aut")),
     person("Brendan", "Malone", email = "brendan.malone@sydney.edu.au", role = "ctb")
@@ -18,14 +18,14 @@ License: GPL-2
 LazyData: TRUE
 Imports: methods, caret, sp, raster, plyr, dplyr, foreach, boot,
         magrittr, viridis
-Suggests: knitr, rmarkdown
+Suggests: knitr, rmarkdown, randomForest, Cubist, gam, stats
 Collate: 'dissever-package.R' 'dissever.R'
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
 NeedsCompilation: no
-Packaged: 2017-12-07 20:29:51 UTC; pierre
+Packaged: 2018-01-15 03:27:33 UTC; pierre
 Author: Pierre Roudier [cre, aut],
   Brendan Malone [ctb]
 Maintainer: Pierre Roudier <roudierp@landcareresearch.co.nz>
 Repository: CRAN
-Date/Publication: 2017-12-08 09:56:40 UTC
+Date/Publication: 2018-01-15 14:58:40 UTC

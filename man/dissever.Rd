@@ -10,7 +10,7 @@
 \S4method{dissever}{RasterLayer,RasterLayer}(coarse, fine, method = "rf",
   p = 0.5, nmax = NULL, thresh = 0.01, min_iter = 5, max_iter = 20,
   boot = NULL, level = 0.9, tune_length = 3,
-  tune_grid = .create_tune_grid(model = method, tune_length = tune_length),
+  tune_grid = .create_tune_grid(model = method, length = tune_length),
   train_control_init = .default_control_init,
   train_control_iter = .default_control_iter, verbose = FALSE)
 }
