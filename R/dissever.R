@@ -62,12 +62,12 @@ utils::globalVariables(c(
 
 .join_interpol <- function(coarse_df, fine_df, attr, by = 'cell'){
   # Nearest-neighbour interpolation as an inner SQL join
-  left_join(fine_df, coarse_df , by = by) %>%
-    select(matches(attr))
+  dplyr::left_join(fine_df, coarse_df , by = by) %>%
+    dplyr::select(matches(attr))
 }
 
 .create_lut_fine <- function(coarse, fine) {
-  extract(coarse, coordinates(fine))
+  raster::extract(coarse, coordinates(fine))
 }
 
 .default_control_init <- caret::trainControl(
@@ -79,9 +79,9 @@ utils::globalVariables(c(
 # fits one model to the entire training set
 .default_control_iter <- caret::trainControl(method = 'none')
 
-.create_tune_grid <- function(model, length) {
+.create_tune_grid <- function(model, tune_length) {
   params <- modelLookup(model)$parameter
-  grid <- expand.grid(lapply(1:length(params), function(x) 1:length))
+  grid <- expand.grid(lapply(1:length(params), function(x) 1:tune_length))
   names(grid) <- as.character(params)
   grid
 }
@@ -247,15 +247,14 @@ utils::globalVariables(c(
     coarse,
     fine,
     method = "rf",
-    p = 0.5,
-    nmax = NULL,
+    p = 0.5, nmax = NULL,
     thresh = 0.01,
     min_iter = 5,
     max_iter = 20,
     boot = NULL,
     level = 0.9,
     tune_length = 3,
-    tune_grid = .create_tune_grid(model = method, length = tune_length),
+    tune_grid = .create_tune_grid(model = method, tune_length = tune_length),
     train_control_init = .default_control_init,
     train_control_iter = .default_control_iter,
     verbose = FALSE
@@ -294,6 +293,20 @@ utils::globalVariables(c(
     .join_interpol(coarse_df = coarse_df[, c('cell', nm_coarse)], fine_df = fine_df, attr = nm_coarse, by = 'cell')
   )
 
+  # If there are NAs at this stage, they are due to the coarse dataset
+  # and fine dataset not overlapping fully
+  # In this case we crop out the missing bits, and throw a warning
+  if (any(is.na(fine_df))) {
+    warning(
+"
+It seems the coarse dataset does not fully covers the extent of the fine dataset.
+
+The corresponding pixels have been removed from the downscaling process.
+"
+)
+    fine_df <- na.omit(fine_df)
+  }
+
   # Sub-sample for modelling
   n_spl <- ceiling(nrow(fine_df) * p) # Number of cells to sample
 
@@ -314,7 +327,7 @@ utils::globalVariables(c(
     tune_grid = tune_grid
   )
 
-  # Getting best setof params
+  # Getting best set of params
   best_params <- fit$bestTune
 
   if (verbose) {
